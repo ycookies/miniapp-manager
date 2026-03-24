@@ -15,7 +15,7 @@ use Dedoc\Scramble\Attributes\QueryParameter;
 use Dedoc\Scramble\Attributes\BodyParameter;
 use Dedoc\Scramble\Attributes\Group;
 
-#[Group('小程序管理-插件','微信小程序',1)]
+#[Group('小程序管理插件-微信小程序','微信小程序',1)]
 class AuthController extends Controller
 {
     /**
