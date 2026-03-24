@@ -4,7 +4,11 @@ namespace Ycookies\MiniappManager\Http\Api\Controllers\Wechat;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Dedoc\Scramble\Attributes\QueryParameter;
+use Dedoc\Scramble\Attributes\BodyParameter;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('小程序管理-插件','微信小程序',1)]
 class UserController extends Controller
 {
     /**
@@ -46,9 +50,19 @@ class UserController extends Controller
         }
 
         $data = $request->validate([
-            'nickname' => 'sometimes|string|max:50',
-            'avatar'   => 'sometimes|string|max:500',
-            'gender'   => 'sometimes|integer|in:0,1,2',
+            // 昵称、头像、性别等可选字段
+            'nickname' => ['sometimes', 'string', 'max:50'],
+            // 头像URL
+            'avatar'   => ['sometimes', 'string', 'max:500'],
+            // 性别：0未知 1男 2女
+            'gender'   => ['sometimes', 'integer', 'in:0,1,2'],
+        ],[
+            'nickname.string' => '昵称必须是字符串',
+            'nickname.max'    => '昵称不能超过50个字符',
+            'avatar.string'   => '头像必须是字符串',
+            'avatar.max'      => '头像URL不能超过500个字符',
+            'gender.integer'  => '性别必须是整数',
+            'gender.in'       => '性别值不合法',
         ]);
 
         $user->update($data);
