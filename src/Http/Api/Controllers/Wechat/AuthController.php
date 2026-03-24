@@ -35,11 +35,11 @@ class AuthController extends Controller
         ]);
         $service = new WechatMiniappService();
 
-        try {
+        //try {
             $session = $service->codeToSession($request->input('code'));
-        } catch (\Throwable $e) {
-            return response()->json(['code' => 500, 'msg' => '微信登录失败'], 500);
-        }
+        // } catch (\Throwable $e) {
+        //     return response()->json(['code' => 500, 'msg' => '微信登录失败'], 500);
+        // }
 
         if (empty($session['openid'])) {
             return response()->json(['code' => 500, 'msg' => '获取 openid 失败'], 500);
