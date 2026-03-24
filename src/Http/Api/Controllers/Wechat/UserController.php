@@ -1,6 +1,5 @@
 <?php
-
-namespace Ycookies\MiniappManager\Http\Controllers\Api\Wechat;
+namespace Ycookies\MiniappManager\Http\Api\Controllers\Wechat;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

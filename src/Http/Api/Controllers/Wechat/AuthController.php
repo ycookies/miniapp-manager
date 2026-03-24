@@ -1,6 +1,6 @@
 <?php
 
-namespace Ycookies\MiniappManager\Http\Controllers\Api\Wechat;
+namespace Ycookies\MiniappManager\Http\Api\Controllers\Wechat;
 
 use App\Models\MemberOauth;
 use App\Models\MemberUser;
@@ -11,18 +11,32 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Ycookies\MiniappManager\Services\WechatMiniappService;
+use Dedoc\Scramble\Attributes\QueryParameter;
+use Dedoc\Scramble\Attributes\BodyParameter;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('小程序管理','微信小程序',1)]
 class AuthController extends Controller
 {
     /**
      * 微信小程序登录
+     * 
      * 接收 wx.login() 返回的 code，换取 openid 并签发 JWT
+     * @unauthenticated
      */
     public function login(Request $request): JsonResponse
     {
+
         $request->validate([
-            'code' => 'required|string',
+            // 微信登录 code
+            'code' => ['required', 'string'],
+        ],[
+            'code.required' => '请提供登录 code',
         ]);
+        echo "<pre>";
+        print_r([3454]);
+        echo "</pre>";
+        exit;
 
         $service = new WechatMiniappService();
 
@@ -95,6 +109,7 @@ class AuthController extends Controller
 
     /**
      * 获取手机号
+     * 
      */
     public function phone(Request $request): JsonResponse
     {

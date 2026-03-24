@@ -10,11 +10,11 @@ class CreateMiniappQrcodesTable extends Migration
     {
         Schema::create('miniapp_qrcodes', function (Blueprint $table) {
             $table->id();
-            $table->string('scene', 255)->comment('场景值');
-            $table->string('page', 255)->default('')->comment('页面路径');
-            $table->unsignedSmallInteger('width')->default(430)->comment('宽度');
-            $table->string('file_path', 500)->default('')->comment('存储路径');
-            $table->string('remark', 255)->default('')->comment('备注');
+            $table->string('page', 255)->comment('页面路径');
+            $table->string('scene', 255)->nullable()->comment('场景值');
+            $table->unsignedSmallInteger('width')->nullable()->default(430)->comment('宽度');
+            $table->string('file_path', 500)->nullable()->default('')->comment('存储路径');
+            $table->string('remark', 255)->nullable()->default('')->comment('备注');
             $table->timestamps();
         });
     }

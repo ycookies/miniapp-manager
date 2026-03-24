@@ -20,7 +20,7 @@ class MiniappManagerServiceProvider extends ServiceProvider
 
     protected $exceptRoutes = [
         'auth' => [
-            'api/miniapp/*',
+            'member-api/miniapp/*',
         ],
     ];
 
@@ -87,14 +87,14 @@ class MiniappManagerServiceProvider extends ServiceProvider
 	{
 		// 注册路由中间件别名
 		$this->app['router']->aliasMiddleware('miniapp.config', CheckPlatformConfig::class);
+
+		// API 路由需在 register() 中加载，因为 boot()/init() 会跳过 API 请求
+		$this->loadApiRoutes();
 	}
 
 	public function init()
 	{
 		parent::init();
-
-		// 注册对外 API 路由
-		$this->loadApiRoutes();
 	}
 
 	public function settingForm()
@@ -107,13 +107,20 @@ class MiniappManagerServiceProvider extends ServiceProvider
 	 */
 	protected function loadApiRoutes(): void
 	{
-		if ($this->app->routesAreCached()) {
-			return;
-		}
-
-		$apiRouteFile = $this->path('src/Http/api.php');
-		if (file_exists($apiRouteFile)) {
-			Route::middleware('api')->group($apiRouteFile);
-		}
+		// if ($this->app->routesAreCached()) {
+		// 	return;
+		// }
+		$apiRouteFile = $this->path('src/Http/Api/routes.php');
+        if(file_exists($apiRouteFile)){
+            \Illuminate\Support\Facades\Route::prefix('member-api')
+                ->middleware('api')
+                ->namespace('Ycookies\MiniappManager\Http\Api\Controllers')
+                ->group($apiRouteFile);
+        }
+		// if (file_exists($apiRouteFile)) {
+		// 	Route::prefix('member-api')
+		// 		->middleware('api')
+		// 		->group($apiRouteFile);
+		// }
 	}
 }
