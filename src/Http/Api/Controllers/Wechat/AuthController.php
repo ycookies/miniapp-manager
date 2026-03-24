@@ -33,11 +33,6 @@ class AuthController extends Controller
         ],[
             'code.required' => '请提供登录 code',
         ]);
-        echo "<pre>";
-        print_r([3454]);
-        echo "</pre>";
-        exit;
-
         $service = new WechatMiniappService();
 
         try {
