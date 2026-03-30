@@ -6,6 +6,12 @@ use Dcat\Admin\Extend\ServiceProvider;
 use Dcat\Admin\Admin;
 use Illuminate\Support\Facades\Route;
 use Ycookies\MiniappManager\Http\Middleware\CheckPlatformConfig;
+use EasyWeChat\OfficialAccount\Application;
+use Ycookies\MiniappManager\Services\WxopenService;
+use Ycookies\MiniappManager\Services\WxPayService;
+use Ycookies\MiniappManager\Services\WxChatPayService;
+use Ycookies\MiniappManager\Services\WechatMiniappService;
+
 
 class MiniappManagerServiceProvider extends ServiceProvider
 {
@@ -90,6 +96,22 @@ class MiniappManagerServiceProvider extends ServiceProvider
 
 		// API 路由需在 register() 中加载，因为 boot()/init() 会跳过 API 请求
 		$this->loadApiRoutes();
+
+                try {
+            //
+            $this->app->singleton('wechat.official_account',function (){
+                return new Application(config('wechat.gzh2.default'));
+
+            });
+            $this->app->singleton('wechat.isvpay',WxPayService::class);
+            $this->app->singleton('wechat.open',WxopenService::class);
+            $this->app->singleton('wechat.miniapp',WechatMiniappService::class);
+
+        } catch (\Error $error) {
+
+        } catch (\Exception $exception) {
+
+        }
 	}
 
 	public function init()

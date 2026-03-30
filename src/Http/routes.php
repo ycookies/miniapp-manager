@@ -4,11 +4,11 @@ use Ycookies\MiniappManager\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 
 // === 配置页（无需验证即可访问） ===
-Route::get('miniapp-manager/{platform}/config', [Controllers\ConfigController::class, 'edit'])
+Route::get('miniapp-manager/{platform}/config', [Controllers\WxMinappController::class, 'index'])
     ->where('platform', 'wechat|alipay|douyin');
-Route::post('miniapp-manager/{platform}/config/save', [Controllers\ConfigController::class, 'save'])
+Route::post('miniapp-manager/{platform}/config/save', [Controllers\WxMinappController::class, 'save'])
     ->where('platform', 'wechat|alipay|douyin');
-Route::post('miniapp-manager/{platform}/config/verify', [Controllers\ConfigController::class, 'verify'])
+Route::post('miniapp-manager/{platform}/config/verify', [Controllers\WxMinappController::class, 'verify'])
     ->where('platform', 'wechat|alipay|douyin');
 
 // === 微信小程序（需配置验证通过） ===
