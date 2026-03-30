@@ -14,6 +14,7 @@ Route::prefix('miniapp/wechat')->group(function () {
     // 需要登录 (JWT memberapi)
     Route::middleware('member.apiAuth')->group(function () {
         Route::post('phone', [Wechat\AuthController::class, 'phone']);
+        Route::post('updateProfile', [Wechat\AuthController::class, 'updateProfile']);
         Route::get('user', [Wechat\UserController::class, 'show']);
         Route::put('user', [Wechat\UserController::class, 'update']);
     });

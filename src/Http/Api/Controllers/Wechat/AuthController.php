@@ -102,6 +102,51 @@ class AuthController extends Controller
         ]);
     }
 
+     /**
+     * 更新用户头像，昵称等信息
+     * 
+     */
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            /**
+             * 昵称 
+             */
+            'nickname' => ['required', 'string', 'max:255'],
+            /**
+             * 头像上传
+             */
+            'avatar'   => ['nullable', 'string','url'],
+        ]);
+
+        $user = auth('memberapi')->user();
+        if (!$user) {
+            return response()->json(['code' => 401, 'msg' => '未登录'], 401);
+        }
+
+        $data = $request->only(['nickname', 'avatar']);
+        // 只更新有值的字段
+        $update = array_filter($data, function ($v) {
+            return !is_null($v) && $v !== '';
+        });
+        if (empty($update)) {
+            return response()->json(['code' => 422, 'msg' => '无可更新内容'], 422);
+        }
+
+        $user->update($update);
+
+        return response()->json([
+            'code' => 0,
+            'msg'  => 'ok',
+            'data' => [
+                'id'       => $user->id,
+                'nickname' => $user->nickname,
+                'avatar'   => $user->avatar,
+                'phone'    => $user->phone,
+            ],
+        ]);
+    }
+
     /**
      * 获取手机号
      * 
